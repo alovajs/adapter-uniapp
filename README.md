@@ -1,11 +1,5 @@
-# @alova/mock
+# @alova/adapter-uniapp
 
-a mock request adapter of alova.js
+uniapp adapter for alova.js
 
-## UsePagination
-
-| Framework | available | tested |
-| --------- | --------- | ------ |
-| vue       | ✅        | ✅     |
-| react     | ✅        | ❌     |
-| svelte    | ✅        | ❌     |
+core library [alova](https://github.com/alovajs/alova)
