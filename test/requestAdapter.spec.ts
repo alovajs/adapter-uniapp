@@ -3,23 +3,17 @@ import AdapterUniapp from '../src/index';
 
 describe('request adapter', () => {
 	test('response with plain body data', async () => {
-		const options = AdapterUniapp({
+		const alovaInst = createAlova({
 			baseURL: 'http://xxx',
+			...AdapterUniapp(),
 			beforeRequest(method) {
-				// method.config.;
+				method.config.;
 			},
-			responsed(data) {
-				data;
+			responsed(data, m) {
+				data
 			}
 		});
-		const alovaInst = createAlova(options);
-		const detailPost = alovaInst.Post<{ id: number }>(
-			'/detail',
-			{},
-			{
-				enableHttp2
-			}
-		);
+		const detailPost = alovaInst.Post<{ id: number }>('/detail', {}, {});
 		const { loading, data, onSuccess } = useRequest(detailPost);
 	});
 });

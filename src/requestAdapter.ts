@@ -1,43 +1,13 @@
 import { AlovaRequestAdapter, Arg, Method, ProgressUpdater, RequestElements } from 'alova';
 import { isPlainObject, noop } from './helper';
 
-type UniappRequestConfig = Omit<
-	UniNamespace.RequestOptions,
-	'url' | 'data' | 'header' | 'method' | 'timeout' | 'success' | 'fail' | 'complete'
->;
-type UniappUploadConfig = Omit<
-	UniNamespace.UploadFileOption,
-	'url' | 'header' | 'formData' | 'timeout' | 'success' | 'fail' | 'complete'
->;
-type UniappDownloadConfig = Omit<
-	UniNamespace.DownloadFileOption,
-	'url' | 'header' | 'timeout' | 'success' | 'fail' | 'complete'
->;
-type UniappConfig = {
-	fileName: string;
-	requestType?: 'upload' | 'download';
-} & (UniappRequestConfig | UniappUploadConfig | UniappDownloadConfig);
-
-export default (
-	elements: RequestElements,
-	method: Method<
-		any,
-		any,
-		any,
-		any,
-		UniappConfig,
-		UniApp.RequestSuccessCallbackResult,
-		UniApp.RequestSuccessCallbackResult['header']
-	>
-) => {
+export default (elements: RequestElements, method: Method<any, any, any, any, any, any, any>) => {
 	const { url, data, type, headers: header } = elements;
 	let taskInstance: UniApp.RequestTask | UniApp.UploadTask | UniApp.DownloadTask;
 	let onDownload: ReturnType<AlovaRequestAdapter<any, any, any, any, any>>['onDownload'] = noop,
 		onUpload: ReturnType<AlovaRequestAdapter<any, any, any, any, any>>['onUpload'] = noop;
 
-	const responsePromise = new Promise<
-		UniApp.UploadFileSuccessCallbackResult | UniApp.DownloadSuccessData | UniApp.RequestSuccessCallbackResult
-	>((resolve, reject) => {
+	const responsePromise = new Promise<any>((resolve, reject) => {
 		const { config: adapterConfig } = method;
 		const { requestType, timeout, fileName } = adapterConfig;
 		if (requestType === 'upload') {
