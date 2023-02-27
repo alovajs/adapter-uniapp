@@ -32,6 +32,10 @@ export const isNumber = (arg: any): arg is number => typeof arg === 'number' && 
  */
 export const isString = (arg: any): arg is string => typeof arg === 'string';
 
+// 判断是否为普通对象
+export const isPlainObject = (arg: any): arg is Record<string, any> =>
+	Object.prototype.toString.call(arg) === '[object Object]';
+
 /**
  * 获取数据长度
  * @param data 数据

@@ -3,15 +3,15 @@ import VueHook from 'alova/vue';
 import requestAdapter from './requestAdapter';
 import storageAdapter from './storageAdapter';
 
-type UniappAdapterOptions<R, T, RC, RE, RH> = Omit<
-	AlovaOptions<R, T, RC, RE, RH>,
+type UniappAdapterOptions<S, E, RC, RE, RH> = Omit<
+	AlovaOptions<S, E, RC, RE, RH>,
 	'statesHook' | 'requestAdapter' | 'storageAdapter'
 >;
-export default function AdapterUniapp<RC, RE, RH>(adapterOptions: UniappAdapterOptions<any, any, RC, RE, RH>) {
+export default function AdapterUniapp<S, E, RC, RE, RH>(adapterOptions: UniappAdapterOptions<S, E, RC, RE, RH>) {
 	return {
 		...adapterOptions,
 		statesHook: VueHook,
 		requestAdapter,
 		storageAdapter
-	} as AlovaOptions<any, any, RC, RE, RH>;
+	};
 }
