@@ -1,5 +1,4 @@
 /// <reference path="../node_modules/@dcloudio/types/uni-app/uni/legacy/uni.d.ts" />
-import { request } from '@dcloudio/types/uni-app/uni/base/request';
 import { AlovaGlobalStorage, Method, ProgressUpdater, RequestElements } from 'alova';
 import VueHook from 'alova/vue';
 
@@ -7,7 +6,7 @@ import VueHook from 'alova/vue';
  * uni.request请求额外参数
  */
 export type UniappRequestConfig = Omit<
-	Parameters<typeof request>[0],
+	UniNamespace.RequestOptions,
 	'url' | 'data' | 'header' | 'method' | 'timeout' | 'success' | 'fail' | 'complete'
 >;
 

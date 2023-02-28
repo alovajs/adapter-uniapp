@@ -1,6 +1,6 @@
 {
 	"name": "@alova/adapter-uniapp",
-	"version": "1.0.0-apha.1",
+	"version": "1.0.0",
 	"description": "uniapp adapter for alova.js",
 	"homepage": "https://alova.js.org",
 	"main": "dist/alova-adapter-uniapp.umd.min.js",
@@ -29,7 +29,7 @@
 		"build:umd.min": "cross-env NODE_ENV=production rollup -c ./config/rollup.config.umd.js",
 		"build": "npm run clean && npm run build:esm && npm run build:umd && npm run build:umd.min",
 		"release": "npm publish",
-		"coveralls": ""
+		"coveralls": "npm run test:coverage && coveralls < coverage/lcov.info"
 	},
 	"publishConfig": {
 		"access": "public"

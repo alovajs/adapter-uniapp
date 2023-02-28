@@ -72,7 +72,7 @@ describe('request adapter', () => {
 	test('should call uni.request with post', async () => {
 		const alovaInst = createAlova({
 			baseURL: 'http://xxx',
-			responsed(data, m) {
+			responsed(data) {
 				const { statusCode, data: subData } = data as UniNamespace.RequestSuccessCallbackResult;
 				expect(statusCode).toBe(200);
 				if (subData) {
