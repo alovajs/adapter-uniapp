@@ -1,8 +1,8 @@
 {
 	"name": "@alova/adapter-uniapp",
-	"version": "1.0.0",
+	"version": "1.0.0-apha.1",
 	"description": "uniapp adapter for alova.js",
-	"homepage": "https://github.com/alovajs/adapter-uniapp",
+	"homepage": "https://alova.js.org",
 	"main": "dist/alova-adapter-uniapp.umd.min.js",
 	"jsnext:main": "dist/alova-adapter-uniapp.esm.js",
 	"module": "dist/alova-adapter-uniapp.esm.js",
@@ -25,7 +25,7 @@
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "git://github.com/alovajs/adapter-uniapp.git"
+		"url": "https://github.com/alovajs/adapter-uniapp"
 	},
 	"bugs": {
 		"url": "https://github.com/alovajs/adapter-uniapp/issues"

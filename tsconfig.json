@@ -21,7 +21,12 @@
 		"importHelpers": true,
 		"removeComments": true,
 		"esModuleInterop": true,
-		"types": ["@dcloudio/types"]
+		"allowJs": true,
+		"types": ["@dcloudio/types", "jest", "node"]
 	},
-	"include": ["src/**/*.ts", "typings/*.d.ts"]
+	"paths": {
+		"@/*": ["src/*"]
+	},
+	"include": ["src/**/*.ts", "typings/*.d.ts"],
+	"exclude": ["node_modules", "**.d.ts"]
 }

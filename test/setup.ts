@@ -1,1 +1,184 @@
-console.log('setup');
+import { request } from '@dcloudio/types/uni-app/uni/base/request';
+import { noop } from '../src/helper';
+import { mockStorageContainer, uniDownloadConfig, uniRequestConfig, uniUploadConfig } from './utils';
+
+interface UniMockMap {
+	request: typeof request;
+	uploadFile: UniNamespace.Uni['uploadFile'];
+	downloadFile: UniNamespace.Uni['downloadFile'];
+	getStorageSync: UniNamespace.Uni['getStorageSync'];
+	setStorageSync: UniNamespace.Uni['setStorageSync'];
+	removeStorageSync: UniNamespace.Uni['removeStorageSync'];
+}
+
+// 统一的响应时间
+const responseDelay = 1000;
+
+// 进度间隔时间
+const progressInterval = 100;
+const progressHandler = {
+	upload: noop as (result: UniNamespace.OnProgressUpdateResult) => void,
+	download: noop as (result: UniNamespace.OnProgressDownloadResult) => void
+};
+const uniMockMap: UniMockMap = {
+	/**
+	 * 模拟实现uni.request
+	 * @param options 请求参数
+	 */
+	request(options) {
+		uniRequestConfig.handler && uniRequestConfig.handler(options);
+		const timer = setTimeout(() => {
+			if (!uniRequestConfig.error && options.success) {
+				options.success({
+					data: {
+						url: options.url,
+						method: options.method,
+						header: options.header || {},
+						data: options.data
+					},
+					statusCode: 200,
+					header: options.header || {},
+					cookies: []
+				});
+			} else if (uniRequestConfig.error && options.fail) {
+				options.fail({
+					errMsg: uniRequestConfig.error.message
+				});
+			}
+		}, responseDelay);
+
+		return {
+			abort() {
+				clearTimeout(timer);
+				options.fail &&
+					options.fail({
+						errMsg: 'request:fail abort'
+					});
+			},
+			onHeadersReceived: noop,
+			offHeadersReceived: noop
+		};
+	},
+
+	/**
+	 * uni.uploadFile模拟实现
+	 * @param options 上传参数
+	 */
+	uploadFile(options) {
+		uniUploadConfig.handler && uniUploadConfig.handler(options);
+
+		let total = 200,
+			sent = 20;
+		const progressTimer = setInterval(() => {
+			sent += (200 / responseDelay) * progressInterval;
+			progressHandler.upload({
+				totalBytesExpectedToSend: total,
+				totalBytesSent: sent,
+				progress: sent / total
+			});
+		}, progressInterval);
+
+		const timer = setTimeout(() => {
+			clearInterval(progressTimer);
+			if (!uniUploadConfig.error && options.success) {
+				options.success({
+					data: 'success',
+					statusCode: 200
+				});
+			} else if (uniUploadConfig.error && options.fail) {
+				options.fail({
+					errMsg: uniUploadConfig.error.message
+				});
+			}
+		}, responseDelay);
+
+		return {
+			abort() {
+				clearTimeout(timer);
+				clearInterval(progressTimer);
+				options.fail &&
+					options.fail({
+						errMsg: 'uploadFile:fail abort'
+					});
+			},
+			onProgressUpdate(callback) {
+				progressHandler.upload = callback;
+			},
+			offProgressUpdate: noop,
+			onHeadersReceived: noop,
+			offHeadersReceived: noop
+		};
+	},
+
+	/**
+	 * uni.downloadFile模拟实现
+	 * @param options 上传参数
+	 */
+	downloadFile(options) {
+		uniDownloadConfig.handler && uniDownloadConfig.handler(options);
+
+		let total = 200,
+			written = 20;
+		const progressTimer = setInterval(() => {
+			written += (200 / responseDelay) * progressInterval;
+			progressHandler.download({
+				totalBytesExpectedToWrite: total,
+				totalBytesWritten: written,
+				progress: written / total
+			});
+		}, progressInterval);
+		const timer = setTimeout(() => {
+			clearInterval(progressTimer);
+			if (!uniDownloadConfig.error && options.success) {
+				options.success({
+					tempFilePath: 'test_path',
+					statusCode: 200
+				});
+			} else if (uniDownloadConfig.error && options.fail) {
+				options.fail({
+					errMsg: uniDownloadConfig.error.message
+				});
+			}
+		}, responseDelay);
+
+		return {
+			abort() {
+				clearTimeout(timer);
+				clearInterval(progressTimer);
+				options.fail &&
+					options.fail({
+						errMsg: 'downloadFile:fail abort'
+					});
+			},
+			onProgressUpdate(callback) {
+				progressHandler.download = callback;
+			},
+			offProgressUpdate: noop,
+			onHeadersReceived: noop,
+			offHeadersReceived: noop
+		};
+	},
+
+	// uni存储函数模拟
+	setStorageSync(key, value) {
+		mockStorageContainer[key] = value;
+	},
+	getStorageSync(key) {
+		return mockStorageContainer[key];
+	},
+	removeStorageSync(key) {
+		delete mockStorageContainer[key];
+	}
+};
+
+declare const global: any;
+global.uni = (window as any).uni = uniMockMap;
+
+// 防止Vue warn打印
+const warn = console.warn;
+console.warn = (...args: any[]) => {
+	args = args.filter((a: any) => !/vue warn/i.test(a));
+	if (args.length > 0) {
+		warn.apply(console, args);
+	}
+};

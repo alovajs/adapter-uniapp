@@ -6,7 +6,7 @@ import VueHook from 'alova/vue';
 /**
  * uni.request请求额外参数
  */
-export type UniappRequestConfig = Omit<
+type UniappRequestConfig = Omit<
 	Parameters<typeof request>[0],
 	'url' | 'data' | 'header' | 'method' | 'timeout' | 'success' | 'fail' | 'complete'
 >;
@@ -14,7 +14,7 @@ export type UniappRequestConfig = Omit<
 /**
  * uni.uploadFile额外参数
  */
-export type UniappUploadConfig = Omit<
+type UniappUploadConfig = Omit<
 	UniNamespace.UploadFileOption,
 	'url' | 'name' | 'header' | 'formData' | 'timeout' | 'success' | 'fail' | 'complete'
 >;
@@ -22,7 +22,7 @@ export type UniappUploadConfig = Omit<
 /**
  * uni.downloadFile额外参数
  */
-export type UniappDownloadConfig = Omit<
+type UniappDownloadConfig = Omit<
 	UniNamespace.DownloadFileOption,
 	'url' | 'header' | 'timeout' | 'success' | 'fail' | 'complete'
 >;
@@ -30,7 +30,7 @@ export type UniappDownloadConfig = Omit<
 /**
  * 合并的请求配置参数
  */
-export type UniappConfig = {
+type UniappConfig = {
 	/**
 	 * 请求类型，upload表示上传，download表示下载，不填写表示正常请求
 	 */
@@ -53,11 +53,7 @@ interface UniappRequestAdapterReturn {
 	onDownload: (handler: ProgressUpdater) => void;
 	onUpload: (handler: ProgressUpdater) => void;
 }
-
-/**
- * uniapp请求适配器
- */
-export interface UniappRequestAdapter {
+interface UniappRequestAdapter {
 	(
 		elements: RequestElements,
 		method: Method<

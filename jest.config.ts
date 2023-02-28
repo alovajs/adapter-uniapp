@@ -26,7 +26,7 @@ export default {
 	coverageDirectory: 'coverage',
 
 	// An array of regexp pattern strings used to skip coverage collection
-	coveragePathIgnorePatterns: ['\\\\node_modules\\\\', '/node_modules/'],
+	coveragePathIgnorePatterns: ['\\\\node_modules\\\\', '/node_modules/', 'test/utils.ts'],
 
 	// Indicates which provider should be used to instrument code for coverage
 	coverageProvider: 'v8',
@@ -142,7 +142,8 @@ export default {
 
 	testMatch: [
 		'**/?(*.)+(spec|test).[tj]s?(x)'
-		// '**/test/parseUrl.spec.ts(x)?'
+		// '**/test/requestAdapter.spec.ts(x)?'
+		// '**/test/storageAdapter.spec.ts(x)?'
 	],
 
 	// An array of regexp pattern strings that are matched against all test paths, matched tests are skipped

@@ -20,20 +20,18 @@ const getCompiler = (
 exports.getCompiler = getCompiler;
 
 const pkg = JSON.parse(readFileSync('package.json').toString() || '{}');
-const version = pkg.version;
-const author = pkg.author;
-const homepage = pkg.homepage;
+const { version, author, homepage, repository } = pkg;
 exports.banner = `/**
   * ${pkg.name} ${version} (${homepage})
   * Copyright ${new Date().getFullYear()} ${author}. All Rights Reserved
-  * Licensed under MIT (${homepage}/blob/master/LICENSE)
+  * Licensed under MIT (${repository.url}/blob/master/LICENSE)
   */
 `;
 
-const compilePath = exports.compilePath = {
-	external: ['alova'],
-	packageName: 'AlovaMock',
+const compilePath = (exports.compilePath = {
+	external: ['alova', 'alova/vue', 'vue'],
+	packageName: 'AlovaAdapterUniapp',
 	input: 'src/index.ts',
-	output: suffix => `dist/alova-mock.${suffix}.js`
-};
+	output: suffix => `dist/alova-adapter-uniapp.${suffix}.js`
+});
 exports.external = compilePath.external;

@@ -1,21 +1,43 @@
+/// <reference path="../node_modules/@dcloudio/types/uni-app/uni/legacy/uni.d.ts" />
 import { AlovaRequestAdapter, Arg, Method, ProgressUpdater, RequestElements } from 'alova';
+import { UniappConfig } from '../typings';
 import { isPlainObject, noop } from './helper';
 
-export default (elements: RequestElements, method: Method<any, any, any, any, any, any, any>) => {
+/**
+ * Uniapp请求适配器
+ */
+export default (
+	elements: RequestElements,
+	method: Method<
+		any,
+		any,
+		any,
+		any,
+		UniappConfig,
+		| UniNamespace.RequestSuccessCallbackResult
+		| UniNamespace.UploadFileSuccessCallbackResult
+		| UniNamespace.DownloadSuccessData,
+		UniNamespace.RequestSuccessCallbackResult['header']
+	>
+) => {
 	const { url, data, type, headers: header } = elements;
 	let taskInstance: UniApp.RequestTask | UniApp.UploadTask | UniApp.DownloadTask;
 	let onDownload: ReturnType<AlovaRequestAdapter<any, any, any, any, any>>['onDownload'] = noop,
 		onUpload: ReturnType<AlovaRequestAdapter<any, any, any, any, any>>['onUpload'] = noop;
 
-	const responsePromise = new Promise<any>((resolve, reject) => {
+	const responsePromise = new Promise<
+		| UniNamespace.RequestSuccessCallbackResult
+		| UniNamespace.UploadFileSuccessCallbackResult
+		| UniNamespace.DownloadSuccessData
+	>((resolve, reject) => {
 		const { config: adapterConfig } = method;
-		const { requestType, timeout, fileName } = adapterConfig;
+		const { requestType, timeout } = adapterConfig;
 		if (requestType === 'upload') {
 			const formData = {} as Arg;
 			const fileData = {} as Arg;
 			if (isPlainObject(data)) {
 				Object.keys(data).forEach(key => {
-					if (['files', 'file', 'filePath'].includes(key)) {
+					if (['name', 'files', 'file', 'filePath'].includes(key)) {
 						fileData[key] = data[key as keyof typeof data];
 					} else {
 						formData[key] = data[key as keyof typeof data];
@@ -27,10 +49,10 @@ export default (elements: RequestElements, method: Method<any, any, any, any, an
 			const uploadTask = (taskInstance = uni.uploadFile({
 				...adapterConfig,
 				...fileData,
+				name: fileData.name,
 				url,
 				header,
 				formData,
-				name: fileName,
 				timeout,
 				success: res => resolve(res),
 				fail: reason => reject(new Error(reason.errMsg)),
@@ -51,7 +73,7 @@ export default (elements: RequestElements, method: Method<any, any, any, any, an
 				header,
 				timeout,
 				success: res => resolve(res),
-				fail: reason => reject(reason),
+				fail: reason => reject(new Error(reason.errMsg)),
 				complete: noop
 			}));
 
@@ -78,8 +100,10 @@ export default (elements: RequestElements, method: Method<any, any, any, any, an
 
 	return {
 		response: () => responsePromise,
-		headers: () => responsePromise.then(res => (res as UniApp.RequestSuccessCallbackResult).header),
-		abort: () => taskInstance.abort(),
+		headers: () => responsePromise.then(res => (res as UniNamespace.RequestSuccessCallbackResult).header || {}),
+		abort: () => {
+			taskInstance.abort();
+		},
 		onDownload,
 		onUpload
 	};
