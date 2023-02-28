@@ -8,12 +8,13 @@ export const undefinedValue = undefined,
  */
 export const noop = () => {};
 
+export type GeneralFn = (...args: any[]) => any;
 /**
  * 判断参数是否为函数
  * @param fn 任意参数
  * @returns 该参数是否为函数
  */
-export const isFn = (arg: any): arg is (...args: any) => any => typeof arg === 'function';
+export const isFn = (arg: any): arg is GeneralFn => typeof arg === 'function';
 
 // 判断是否为某个类的实例
 export const instanceOf = <T>(arg: any, cls: new (...args: any[]) => T): arg is T => arg instanceof cls;
@@ -42,41 +43,3 @@ export const isPlainObject = (arg: any): arg is Record<string, any> =>
  * @returns 数据长度
  */
 export const len = (data: any[] | Uint8Array | string) => data.length;
-
-/**
- * 解析url
- * @param url url
- * @returns 解析后的信息对象
- */
-export const parseUrl = (url: string) => {
-	url = /^[^/]*\/\//.test(url) ? url : '//' + url;
-	const splitedFullPath = url.split('/').slice(3);
-	let pathContainedParams = splitedFullPath.pop(),
-		pathname = '',
-		query = {} as Record<string, string>,
-		hash = '';
-	if (pathContainedParams) {
-		pathContainedParams = pathContainedParams.replace(/\?[^\?\#]+/, mat => {
-			// 解析url参数
-			mat
-				.substring(1)
-				.split('&')
-				.forEach(paramItem => {
-					const [key, value] = paramItem.split('=');
-					key && (query[key] = value);
-				});
-			return '';
-		});
-		pathContainedParams = pathContainedParams.replace(/#[^#]*/, mat => {
-			hash = mat;
-			return '';
-		});
-		splitedFullPath.push(pathContainedParams);
-		pathname = '/' + splitedFullPath.join('/');
-	}
-	return {
-		pathname,
-		query,
-		hash
-	};
-};

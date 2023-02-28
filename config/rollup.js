@@ -20,11 +20,12 @@ const getCompiler = (
 exports.getCompiler = getCompiler;
 
 const pkg = JSON.parse(readFileSync('package.json').toString() || '{}');
-const { version, author, homepage, repository } = pkg;
+const { version, author, homepage } = pkg;
+const repository = pkg.repository.url.replace('git', 'https').replace('.git', '');
 exports.banner = `/**
   * ${pkg.name} ${version} (${homepage})
   * Copyright ${new Date().getFullYear()} ${author}. All Rights Reserved
-  * Licensed under MIT (${repository.url}/blob/master/LICENSE)
+  * Licensed under MIT (${repository}/blob/master/LICENSE)
   */
 `;
 

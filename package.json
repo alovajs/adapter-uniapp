@@ -7,10 +7,23 @@
 	"jsnext:main": "dist/alova-adapter-uniapp.esm.js",
 	"module": "dist/alova-adapter-uniapp.esm.js",
 	"types": "typings/index.d.ts",
+	"keywords": [
+		"hooks",
+		"vuejs",
+		"typescript",
+		"vue",
+		"request",
+		"vue3",
+		"superagent",
+		"alova",
+		"uniapp"
+	],
 	"scripts": {
 		"clean": "rimraf ./dist",
 		"test": "jest",
 		"test:coverage": "jest --coverage",
+		"lint": "eslint --ext .ts,.js src/**",
+		"lint:fix": "eslint --ext .ts,.js src/** --fix",
 		"build:esm": "cross-env NODE_ENV=development rollup -c ./config/rollup.config.esm.js",
 		"build:umd": "cross-env NODE_ENV=development rollup -c ./config/rollup.config.umd.js",
 		"build:umd.min": "cross-env NODE_ENV=production rollup -c ./config/rollup.config.umd.js",
@@ -25,7 +38,7 @@
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/alovajs/adapter-uniapp"
+		"url": "git://github.com/alovajs/adapter-uniapp.git"
 	},
 	"bugs": {
 		"url": "https://github.com/alovajs/adapter-uniapp/issues"
@@ -43,15 +56,17 @@
 		"@rollup/plugin-node-resolve": "^13.3.0",
 		"@rollup/plugin-replace": "^4.0.0",
 		"@testing-library/jest-dom": "^5.16.4",
-		"@types/jest": "^27.5.1",
-		"@typescript-eslint/eslint-plugin": "^1.4.2",
-		"@typescript-eslint/parser": "^1.4.2",
+		"@types/jest": "^29.4.0",
+		"@typescript-eslint/eslint-plugin": "^5.54.0",
+		"@typescript-eslint/parser": "^5.54.0",
 		"alova": "^2.0.2",
 		"babel-jest": "^29.2.2",
 		"coveralls": "^3.1.1",
 		"cross-env": "5.2.0",
-		"eslint": "^5.15.1",
-		"jest": "^29.2.2",
+		"eslint": "^8.35.0",
+		"eslint-config-prettier": "^8.6.0",
+		"eslint-plugin-prettier": "^4.2.1",
+		"jest": "^29.4.3",
 		"jest-environment-jsdom": "^29.2.2",
 		"prettier": "^2.7.1",
 		"rimraf": "2.6.2",
