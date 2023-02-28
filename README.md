@@ -1,6 +1,6 @@
 # @alova/adapter-uniapp
 
-uniapp adapter for alova.js
+alova 的 uniapp 适配器
 
 [![npm](https://img.shields.io/npm/v/@alova/adapter-uniapp)](https://www.npmjs.com/package/@alova/adapter-uniapp)
 [![build](https://github.com/alovajs/adapter-uniapp/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/alovajs/adapter-uniapp/actions/workflows/main.yml)
@@ -8,139 +8,129 @@ uniapp adapter for alova.js
 ![typescript](https://badgen.net/badge/icon/typescript?icon=typescript&label)
 ![license](https://img.shields.io/badge/license-MIT-blue.svg)
 
-[Website](https://alova.js.org/extension/alova-adapter-uniapp) | core library [alova](https://github.com/alovajs/alova)
+[官网](https://alova.js.org/extension/alova-adapter-uniapp) | [核心库 alova](https://github.com/alovajs/alova)
 
-## Install
+## 使用方法
 
-```bash
-# npm
-npm install @alova/adapter-uniapp --save
+### 创建 alova
 
-# yarn
-yarn add @alova/adapter-uniapp
-```
-
-## Usage
-
-### create alova
-
-Calling **AdapterUniapp** will return _Request Adapter_, _Storage Adapter_, and _VueHook_, so you no longer need to set these three items, and the usage is exactly the same.
+调用 **AdapterUniapp** 将返回*请求适配器*、_存储适配器_，以及*VueHook*，因此你不再需要设置这三个项，使用方法完全一致。
 
 ```javascript
 import { createAlova } from 'alova';
 import AdapterUniapp from '@alova/adapter-uniapp';
 
 const alovaInst = createAlova(
-   baseURL: 'https://api.alovajs.org',
-   ...AdapterUniapp()
+  baseURL: 'https://api.alovajs.org',
+  ...AdapterUniapp()
 );
 ```
 
-### Request
+### 请求
 
-The usage method of the request is exactly the same as that used in the web environment. Already fully compatible with `uni.request`, you can specify [all configuration items] supported by `uni.request` in _config_ of method instance creation (https://uniapp.dcloud.net.cn/api/request/ request.html)
+请求的使用方法与 web 环境中使用完全一致。已经完全兼容`uni.request`，你可以在创建 method 实例的*config*中指定`uni.request`支持的[全部配置项](https://uniapp.dcloud.net.cn/api/request/request.html)
 
 ```html
 <tempate>
-   <view v-if="loading">Loading...</view>
-   <view>The requested data is: {{ data }}</view>
-</template>
+	<view v-if="loading">加载中...</view>
+	<view>请求数据为：{{ data }}</view>
+</tempate>
 
 <script setup>
-   const list = () =>
-     alovaInst. Get('/list', {
-       // The set parameters will be passed to uni.request
-       enableHttp2: true,
-       sslVerify: true
-     });
-   const { loading, data, uploading } = useRequest(list);
+	const list = () =>
+		alovaInst.Get('/list', {
+			// 设置的参数将传递给uni.request
+			enableHttp2: true,
+			sslVerify: true
+		});
+	const { loading, data, uploading } = useRequest(list);
 </script>
 ```
 
-### Upload
+### 上传
 
-When `requestType: 'upload'` is set in the _config_ of the method instance, it means to upload the file, the request adapter will call `uni.uploadFile`, and the uploaded file data is placed in the data of the method instance, you need to specify in the data `name`, `filePath or files`, and `file` (if necessary), these 4 parameters will be passed to `uni.uploadFile`, at the same time, you can also specify other parameters besides these 4 parameters in data , the request adapter will pass them into the `formData` parameter.
+在 method 实例的*config*中设置`requestType: 'upload'`时表示上传文件，请求适配器将会调用`uni.uploadFile`，上传的文件数据放在 method 实例的 data 中，你需要在 data 中指定`name`、`filePath或files`，以及`file`(如果需要)，这 4 个参数将传到`uni.uploadFile`中，同时，你还可以在 data 中指定这 4 个参数外的其他参数，请求适配器会将它们传入到`formData`参数中。
 
-Similarly, it is fully compatible with `uni.uploadFile`, you can specify [all configuration items] supported by `uni.uploadFile` in _config_ of method instance creation (https://uniapp.dcloud.net.cn/api /request/network-file.html#uploadfile), if there are additional parameters to be set, please specify them in _config_ of the method instance.
+同样的，已经完全兼容`uni.uploadFile`，你可以在创建 method 实例的*config*中指定`uni.uploadFile`支持的[全部配置项](https://uniapp.dcloud.net.cn/api/request/network-file.html#uploadfile)，如果还有额外的参数需要设置，请在 method 实例的*config*中指定。
 
 ```html
 <tempate>
-   <view v-if="loading">Uploading...</view>
-   <view>Upload progress: {{ uploading.loaded }}/{{ uploading.total }}</view>
-   <button @click="handleImageChoose">Upload image</button>
-   <!-- ... -->
-</template>
+	<view v-if="loading">上传中...</view>
+	<view>上传进度：{{ uploading.loaded }}/{{ uploading.total }}</view>
+	<button @click="handleImageChoose">上传图片</button>
+	<!-- ... -->
+</tempate>
 
 <script setup>
-   const uploadFile = (name, filePath, formData) =>
-     alovaInst. Post(
-       '/uploadImg',
-       {
-         name,
-         filePath,
+	const uploadFile = (name, filePath, formData) =>
+		alovaInst.Post(
+			'/uploadImg',
+			{
+				name,
+				filePath,
 
-         // Additional data will be passed into formData of uni.uploadFile
-         ...formData
-       },
-       {
-         // Set the request method to upload, and the adapter will call uni.uploadFile
-         requestType: 'upload',
-         fileType: 'image',
+				// 额外数据将传入uni.uploadFile的formData中
+				...formData
+			},
+			{
+				// 设置请求方式为上传，适配器内将调用uni.uploadFile
+				requestType: 'upload',
+				fileType: 'image',
 
-         // Start upload progress
-         enableUpload: true
-       }
-     );
+				// 开启上传进度
+				enableUpload: true
+			}
+		);
 
-   const { loading, data, uploading, send } = useRequest(uploadFile, {
-     immediate: false
-   });
+	const { loading, data, uploading, send } = useRequest(uploadFile, {
+		immediate: false
+	});
 
-   const handleImageChoose = () => {
-     uni.chooseImage({
-       success: chooseImageRes => {
-         const tempFilePaths = chooseImageRes.tempFilePaths;
-         send('fileName', tempFilePaths[0], {
-           extra1: 'a',
-           extra2: 'b'
-         });
-       }
-     });
-   };
+	const handleImageChoose = () => {
+		uni.chooseImage({
+			success: chooseImageRes => {
+				const tempFilePaths = chooseImageRes.tempFilePaths;
+				send('fileName', tempFilePaths[0], {
+					extra1: 'a',
+					extra2: 'b'
+				});
+			}
+		});
+	};
 </script>
 ```
 
-### download
+### 下载
 
-When `requestType: 'download'` is set in the _config_ of the method instance, it means to download the file, and the request adapter will call `uni.downloadFile`.
+在 method 实例的*config*中设置`requestType: 'download'`时表示下载文件，请求适配器将会调用`uni.downloadFile`。
 
-Similarly, it is fully compatible with `uni.downloadFile`, you can specify [all configuration items] supported by `uni.downloadFile` in _config_ of method instance creation (https://uniapp.dcloud.net.cn/api /request/network-file.html#downloadfile), if there are additional parameters to be set, please specify them in _config_ of the method instance.
+同样的，已经完全兼容`uni.downloadFile`，你可以在创建 method 实例的*config*中指定`uni.downloadFile`支持的[全部配置项](https://uniapp.dcloud.net.cn/api/request/network-file.html#downloadfile)，如果还有额外的参数需要设置，请在 method 实例的*config*中指定。
 
 ```html
 <tempate>
-   <view v-if="loading">Downloading...</view>
-   <view>Download progress: {{ downloading.loaded }}/{{ downloading.total }}</view>
-   <button @click="handleImageDownload">Download image</button>
-   <!-- ... -->
-</template>
+	<view v-if="loading">下载中...</view>
+	<view>下载进度：{{ downloading.loaded }}/{{ downloading.total }}</view>
+	<button @click="handleImageDownload">下载图片</button>
+	<!-- ... -->
+</tempate>
 
 <script setup>
-   const downloadFile = filePath =>
-     alovaInst. Get('/bigImage. jpg', {
-       // Set the request method to download, and the adapter will call uni.downloadFile
-       requestType: 'download',
-       filePath,
+	const downloadFile = filePath =>
+		alovaInst.Get('/bigImage.jpg', {
+			// 设置请求方式为下载，适配器内将调用uni.downloadFile
+			requestType: 'download',
+			filePath,
 
-       // Start download progress
-       enableDownload: true
-     });
+			// 开启下载进度
+			enableDownload: true
+		});
 
-   const { loading, data, downloading, send } = useRequest(downloadFile, {
-     immediate: false
-   });
+	const { loading, data, downloading, send } = useRequest(downloadFile, {
+		immediate: false
+	});
 
-   const handleImageDownload = () => {
-     send('file_save_path');
-   };
+	const handleImageDownload = () => {
+		send('file_save_path');
+	};
 </script>
 ```
