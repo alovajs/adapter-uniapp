@@ -40,7 +40,7 @@ describe('storage adapter', () => {
 		 * 缓存数据如下：
 		 * [{"url":"http://xxx/unit-test","method":"GET","header":{}},1677564705831,null]
 		 */
-		const storagedData = JSON.parse(mockStorageContainer[`alova.${alovaInst.id}${getMethodKey(Get)}`] || '{}');
+		const storagedData = mockStorageContainer[`alova.${alovaInst.id}${getMethodKey(Get)}`] || {};
 		expect(storagedData[0]?.url).toBe('http://xxx/unit-test');
 		expect(storagedData[0]?.method).toBe('GET');
 		expect(storagedData[0]?.header).toStrictEqual({});

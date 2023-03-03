@@ -48,7 +48,7 @@
 		"typings/*.d.ts"
 	],
 	"devDependencies": {
-		"@alova/mock": "^1.1.0",
+		"@alova/mock": "^1.1.1",
 		"@babel/core": "^7.18.2",
 		"@babel/preset-env": "^7.18.2",
 		"@dcloudio/types": "^3.2.11",
