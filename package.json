@@ -1,6 +1,6 @@
 {
 	"name": "@alova/adapter-uniapp",
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"description": "uniapp adapter for alova.js",
 	"homepage": "https://alova.js.org",
 	"main": "dist/alova-adapter-uniapp.umd.min.js",
@@ -48,6 +48,7 @@
 		"typings/*.d.ts"
 	],
 	"devDependencies": {
+		"@alova/mock": "^1.1.0",
 		"@babel/core": "^7.18.2",
 		"@babel/preset-env": "^7.18.2",
 		"@dcloudio/types": "^3.2.11",
@@ -59,7 +60,7 @@
 		"@types/jest": "^29.4.0",
 		"@typescript-eslint/eslint-plugin": "^5.54.0",
 		"@typescript-eslint/parser": "^5.54.0",
-		"alova": "^2.0.2",
+		"alova": "^2.0.4",
 		"babel-jest": "^29.2.2",
 		"coveralls": "^3.1.1",
 		"cross-env": "5.2.0",

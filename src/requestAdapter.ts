@@ -1,25 +1,12 @@
 /// <reference path="../node_modules/@dcloudio/types/uni-app/uni/legacy/uni.d.ts" />
-import { AlovaRequestAdapter, Arg, Method, ProgressUpdater, RequestElements } from 'alova';
-import { UniappConfig } from '../typings';
+import { AlovaRequestAdapter, Arg, ProgressUpdater } from 'alova';
+import { UniappRequestAdapter } from '../typings';
 import { isPlainObject, noop } from './helper';
 
 /**
  * Uniapp请求适配器
  */
-export default (
-	elements: RequestElements,
-	method: Method<
-		any,
-		any,
-		any,
-		any,
-		UniappConfig,
-		| UniNamespace.RequestSuccessCallbackResult
-		| UniNamespace.UploadFileSuccessCallbackResult
-		| UniNamespace.DownloadSuccessData,
-		UniNamespace.RequestSuccessCallbackResult['header']
-	>
-) => {
+const requestAdapter: UniappRequestAdapter = (elements, method) => {
 	const { url, data, type, headers: header } = elements;
 	let taskInstance: UniApp.RequestTask | UniApp.UploadTask | UniApp.DownloadTask;
 	let onDownload: ReturnType<AlovaRequestAdapter<any, any, any, any, any>>['onDownload'] = noop,
@@ -108,3 +95,5 @@ export default (
 		onUpload
 	};
 };
+
+export default requestAdapter;

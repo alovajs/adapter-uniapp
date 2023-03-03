@@ -1,7 +1,7 @@
 /// <reference path="../node_modules/@dcloudio/types/index.d.ts" />
-import { createAlova, invalidateCache, useRequest } from 'alova';
+import { createAlova, getMethodKey, invalidateCache, useRequest } from 'alova';
 import AdapterUniapp from '../src/index';
-import { generateMethodKey, mockStorageContainer, untilCbCalled } from './utils';
+import { mockStorageContainer, untilCbCalled } from './utils';
 
 const alovaInst = createAlova({
 	baseURL: 'http://xxx',
@@ -40,7 +40,7 @@ describe('storage adapter', () => {
 		 * 缓存数据如下：
 		 * [{"url":"http://xxx/unit-test","method":"GET","header":{}},1677564705831,null]
 		 */
-		const storagedData = JSON.parse(mockStorageContainer[`alova.${alovaInst.id}${generateMethodKey(Get)}`] || '{}');
+		const storagedData = JSON.parse(mockStorageContainer[`alova.${alovaInst.id}${getMethodKey(Get)}`] || '{}');
 		expect(storagedData[0]?.url).toBe('http://xxx/unit-test');
 		expect(storagedData[0]?.method).toBe('GET');
 		expect(storagedData[0]?.header).toStrictEqual({});
@@ -61,7 +61,7 @@ describe('storage adapter', () => {
 		 * 缓存数据如下：
 		 * [{"url":"http://xxx/unit-test","method":"GET","header":{}},1677564705831,null]
 		 */
-		const getStoragedData = () => mockStorageContainer[`alova.${alovaInst.id}${generateMethodKey(Get)}`];
+		const getStoragedData = () => mockStorageContainer[`alova.${alovaInst.id}${getMethodKey(Get)}`];
 		expect(!!getStoragedData()).toBeTruthy();
 
 		invalidateCache(Get);

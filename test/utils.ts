@@ -1,7 +1,5 @@
 /// <reference path="../node_modules/@dcloudio/types/uni-app/uni/legacy/uni.d.ts" />
 
-import { Method } from 'alova';
-
 // 请求事件配置
 export const uniRequestConfig = {
 	handler: undefined as Function | undefined,
@@ -19,7 +17,7 @@ export const uniUploadConfig = {
 };
 export function onUploadCall(handler: (options: UniNamespace.UploadFileOption) => void, error?: Error) {
 	uniUploadConfig.handler = handler;
-	uniUploadConfig.error;
+	uniUploadConfig.error = error;
 }
 
 // 下载事件配置
@@ -42,13 +40,3 @@ export const untilCbCalled = <T>(setCb: (cb: (arg: T) => void, ...others: any[])
 			resolve(d);
 		}, ...args);
 	});
-
-/**
- * 生成method实例的key值
- * @returns {string} 此请求方式的key值
- */
-export const generateMethodKey = (methodInstance: Method) => {
-	const { type, url, data } = methodInstance;
-	const { params, headers } = methodInstance.config;
-	return JSON.stringify([type, url, params, data, headers]);
-};

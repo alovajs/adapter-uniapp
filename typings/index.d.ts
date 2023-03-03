@@ -1,5 +1,6 @@
 /// <reference path="../node_modules/@dcloudio/types/uni-app/uni/legacy/uni.d.ts" />
-import { AlovaGlobalStorage, Method, ProgressUpdater, RequestElements } from 'alova';
+import { MockResponse } from '@alova/mock';
+import { AlovaGlobalStorage, AlovaRequestAdapter, ProgressUpdater } from 'alova';
 import VueHook from 'alova/vue';
 
 /**
@@ -15,7 +16,7 @@ export type UniappRequestConfig = Omit<
  */
 export type UniappUploadConfig = Omit<
 	UniNamespace.UploadFileOption,
-	'url' | 'name' | 'header' | 'formData' | 'timeout' | 'success' | 'fail' | 'complete'
+	'url' | 'files' | 'file' | 'filePath' | 'name' | 'header' | 'formData' | 'timeout' | 'success' | 'fail' | 'complete'
 >;
 
 /**
@@ -56,26 +57,63 @@ interface UniappRequestAdapterReturn {
 /**
  * uniapp请求适配器
  */
-export interface UniappRequestAdapter {
-	(
-		elements: RequestElements,
-		method: Method<
-			any,
-			any,
-			any,
-			any,
-			UniappConfig,
-			| UniNamespace.RequestSuccessCallbackResult
-			| UniNamespace.UploadFileSuccessCallbackResult
-			| UniNamespace.DownloadSuccessData,
-			UniNamespace.RequestSuccessCallbackResult['header']
-		>
-	): UniappRequestAdapterReturn;
+export type UniappRequestAdapter = AlovaRequestAdapter<
+	any,
+	any,
+	UniappConfig,
+	| UniNamespace.RequestSuccessCallbackResult
+	| UniNamespace.UploadFileSuccessCallbackResult
+	| UniNamespace.DownloadSuccessData,
+	UniNamespace.RequestSuccessCallbackResult['header']
+>;
+
+export interface AdapterUniappOptions {
+	mockRequest?: AlovaRequestAdapter<any, any, any, any, any>;
 }
 
-declare function AdapterUniapp(): {
+/**
+ * uniapp请求适配器
+ */
+export const uniappRequestAdapter: UniappRequestAdapter;
+/**
+ * uniapp存储适配器
+ */
+export const uniappStorageAdapter: AlovaGlobalStorage;
+
+/**
+ * 适配器集合
+ * @param options 请求配置参数
+ */
+declare function AdapterUniapp(options?: AdapterUniappOptions): {
 	statesHook: typeof VueHook;
 	requestAdapter: UniappRequestAdapter;
 	storageAdapter: AlovaGlobalStorage;
 };
 export default AdapterUniapp;
+
+/**
+ * 模拟响应适配器，它用于@alova/mock中，让模拟请求时也能返回uniapp响应数据兼容的格式
+ * @example
+ * ```js
+ * import AdapterUniapp, { uniappRequestAdapter } from '@alova/adapter-uniapp';
+ *
+ * const mockRequestAdapter = createAlovaMockAdapter([mocks], {
+ *		delay: 1000,
+ *		onMockResponse: mockResponse,
+ *    httpAdapter: uniappRequestAdapter
+ * });
+ *	const alovaInst = createAlova({
+ *		baseURL: 'http://xxx',
+ *		...UniappAdapter({
+ *      mockAdapter: process.env.NODE_ENV === 'development' ? mockRequestAdapter : undefined
+ *    }),
+ *	});
+ * ```
+ */
+export declare const uniappMockResponse: MockResponse<
+	UniappConfig,
+	| UniNamespace.RequestSuccessCallbackResult
+	| UniNamespace.UploadFileSuccessCallbackResult
+	| UniNamespace.DownloadSuccessData,
+	UniNamespace.RequestSuccessCallbackResult['header']
+>;

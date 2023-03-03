@@ -1,12 +1,15 @@
-// import { UniNamespace } from '@dcloudio/types/uni-app/uni/legacy/uni';
 import VueHook from 'alova/vue';
+import { AdapterUniappOptions } from '../typings';
 import requestAdapter from './requestAdapter';
 import storageAdapter from './storageAdapter';
+export { default as uniappMockResponse } from './mockResponse';
+export { default as uniappRequestAdapter } from './requestAdapter';
+export { default as uniappStorageAdapter } from './storageAdapter';
 
-export default function AdapterUniapp() {
+export default function AdapterUniapp({ mockRequest }: AdapterUniappOptions = {}) {
 	return {
 		statesHook: VueHook,
-		requestAdapter: requestAdapter,
+		requestAdapter: mockRequest || requestAdapter,
 		storageAdapter
 	};
 }
