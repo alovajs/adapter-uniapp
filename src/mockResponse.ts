@@ -36,7 +36,7 @@ const mockResponseHandler: MockResponse<
 		response: {
 			data: body,
 			statusCode: status,
-			header: {},
+			header: responseHeaders,
 			cookies: []
 		},
 		headers: responseHeaders

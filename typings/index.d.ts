@@ -1,6 +1,6 @@
 /// <reference path="../node_modules/@dcloudio/types/uni-app/uni/legacy/uni.d.ts" />
 import { MockResponse } from '@alova/mock';
-import { AlovaGlobalStorage, AlovaRequestAdapter, ProgressUpdater } from 'alova';
+import { AlovaGlobalStorage, AlovaRequestAdapter } from 'alova';
 import VueHook from 'alova/vue';
 
 /**
@@ -40,21 +40,6 @@ export type UniappConfig = {
 	UniappDownloadConfig;
 
 /**
- * 请求适配器返回数据
- */
-interface UniappRequestAdapterReturn {
-	response: () => Promise<
-		| UniNamespace.RequestSuccessCallbackResult
-		| UniNamespace.UploadFileSuccessCallbackResult
-		| UniNamespace.DownloadSuccessData
-	>;
-	headers: () => Promise<UniNamespace.RequestSuccessCallbackResult['header']>;
-	abort: () => void;
-	onDownload: (handler: ProgressUpdater) => void;
-	onUpload: (handler: ProgressUpdater) => void;
-}
-
-/**
  * uniapp请求适配器
  */
 export type UniappRequestAdapter = AlovaRequestAdapter<
@@ -74,11 +59,11 @@ export interface AdapterUniappOptions {
 /**
  * uniapp请求适配器
  */
-export const uniappRequestAdapter: UniappRequestAdapter;
+export declare const uniappRequestAdapter: UniappRequestAdapter;
 /**
  * uniapp存储适配器
  */
-export const uniappStorageAdapter: AlovaGlobalStorage;
+export declare const uniappStorageAdapter: AlovaGlobalStorage;
 
 /**
  * 适配器集合
@@ -104,7 +89,7 @@ export default AdapterUniapp;
  * });
  *	const alovaInst = createAlova({
  *		baseURL: 'http://xxx',
- *		...UniappAdapter({
+ *		...AdapterUniapp({
  *      mockAdapter: process.env.NODE_ENV === 'development' ? mockRequestAdapter : undefined
  *    }),
  *	});
