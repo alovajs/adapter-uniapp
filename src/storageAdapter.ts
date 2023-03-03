@@ -5,7 +5,7 @@ export default {
 		return uni.getStorageSync(key);
 	},
 	set(key, value) {
-		uni.setStorageSync(key, JSON.stringify(value));
+		uni.setStorageSync(key, value);
 	},
 	remove(key) {
 		uni.removeStorageSync(key);
