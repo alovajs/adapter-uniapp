@@ -10,7 +10,7 @@ var commonjs = require('@rollup/plugin-commonjs');
 var { terser } = require('rollup-plugin-terser');
 var replace = require('@rollup/plugin-replace');
 var json = require('@rollup/plugin-json');
-var config = require('./rollup.js');
+var config = require('./rollup.cjs');
 var prod = process.env.NODE_ENV === 'production';
 var paths = config.compilePath;
 var moduleType = prod ? 'umd.min' : 'umd';

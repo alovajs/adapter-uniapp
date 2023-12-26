@@ -3,9 +3,9 @@
 	"version": "1.1.1",
 	"description": "uniapp adapter for alova.js",
 	"homepage": "https://alova.js.org",
-	"main": "dist/alova-adapter-uniapp.umd.min.js",
-	"jsnext:main": "dist/alova-adapter-uniapp.esm.js",
+	"main": "dist/alova-adapter-uniapp.esm.js",
 	"module": "dist/alova-adapter-uniapp.esm.js",
+	"type": "module",
 	"types": "typings/index.d.ts",
 	"keywords": [
 		"hooks",
@@ -24,9 +24,9 @@
 		"test:coverage": "jest --coverage",
 		"lint": "eslint --ext .ts,.js src/**",
 		"lint:fix": "eslint --ext .ts,.js src/** --fix",
-		"build:esm": "cross-env NODE_ENV=development rollup -c ./config/rollup.config.esm.js",
-		"build:umd": "cross-env NODE_ENV=development rollup -c ./config/rollup.config.umd.js",
-		"build:umd.min": "cross-env NODE_ENV=production rollup -c ./config/rollup.config.umd.js",
+		"build:esm": "cross-env NODE_ENV=development rollup -c ./config/rollup.config.esm.cjs",
+		"build:umd": "cross-env NODE_ENV=development rollup -c ./config/rollup.config.umd.cjs",
+		"build:umd.min": "cross-env NODE_ENV=production rollup -c ./config/rollup.config.umd.cjs",
 		"build": "npm run clean && npm run build:esm && npm run build:umd && npm run build:umd.min",
 		"release": "semantic-release",
 		"coveralls": "npm run test:coverage && coveralls < coverage/lcov.info",
@@ -53,7 +53,7 @@
 		"@babel/core": "^7.18.2",
 		"@babel/preset-env": "^7.18.2",
 		"@commitlint/config-conventional": "^17.4.4",
-		"@dcloudio/types": "^3.2.11",
+		"@dcloudio/uni-app": "^3.0.0-3090920231225001",
 		"@rollup/plugin-commonjs": "^22.0.0",
 		"@rollup/plugin-json": "^4.1.0",
 		"@rollup/plugin-node-resolve": "^13.3.0",
@@ -63,7 +63,7 @@
 		"@types/jest": "^29.4.0",
 		"@typescript-eslint/eslint-plugin": "^5.54.0",
 		"@typescript-eslint/parser": "^5.54.0",
-		"alova": "^2.0.4",
+		"alova": "^2.16.2",
 		"babel-jest": "^29.2.2",
 		"commitizen": "^4.3.0",
 		"commitlint": "^17.5.1",
@@ -88,6 +88,9 @@
 		"tslib": "^2.4.0",
 		"typescript": "^4.7.2",
 		"vue": "^3.2.45"
+	},
+	"peerDependencies": {
+		"alova": ">=2.16.2"
 	},
 	"config": {
 		"commitizen": {

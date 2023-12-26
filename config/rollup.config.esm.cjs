@@ -1,10 +1,9 @@
 // rollup.config.js
 // ES output
-var { nodeResolve } = require('@rollup/plugin-node-resolve');
-var config = require('./rollup.js');
-var paths = config.compilePath;
-var moduleType = 'esm';
-
+const { nodeResolve } = require('@rollup/plugin-node-resolve');
+const config = require('./rollup.cjs');
+const paths = config.compilePath;
+const moduleType = 'esm';
 const globals = {};
 // 将externals中的内容放到globals对象中
 config.external.forEach(key => (globals[key] = key));

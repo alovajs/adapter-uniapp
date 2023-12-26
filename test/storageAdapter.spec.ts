@@ -5,7 +5,7 @@ import { mockStorageContainer, untilCbCalled } from './utils';
 
 const alovaInst = createAlova({
 	baseURL: 'http://xxx',
-	responsed(data) {
+	responded(data) {
 		const { data: subData } = data as UniNamespace.RequestSuccessCallbackResult;
 		if (subData) {
 			return subData;
