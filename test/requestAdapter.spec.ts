@@ -10,12 +10,12 @@ describe('request adapter', () => {
 			baseURL: 'http://xxx',
 			beforeRequest(method) {
 				method.config.headers.a = 'a';
-				method.extra = {
+				method.meta = {
 					from: 'beforeRequest'
 				};
 			},
-			responsed(data, m) {
-				expect(m.extra).toStrictEqual({
+			responded(data, m) {
+				expect(m.meta).toStrictEqual({
 					from: 'beforeRequest'
 				});
 				expect(m.config.headers.a).toBe('a');
@@ -72,7 +72,7 @@ describe('request adapter', () => {
 	test('should call uni.request with post', async () => {
 		const alovaInst = createAlova({
 			baseURL: 'http://xxx',
-			responsed(data) {
+			responded(data) {
 				const { statusCode, data: subData } = data as UniNamespace.RequestSuccessCallbackResult;
 				expect(statusCode).toBe(200);
 				if (subData) {
@@ -172,7 +172,7 @@ describe('request adapter', () => {
 	test('should cancel request when call `task.abort` returned by uni.request', async () => {
 		const alovaInst = createAlova({
 			baseURL: 'http://xxx',
-			responsed(data) {
+			responded(data) {
 				const { data: subData } = data as UniNamespace.RequestSuccessCallbackResult;
 				if (subData) {
 					return subData;
@@ -210,7 +210,7 @@ describe('request adapter', () => {
 	test('should call uni.uploadFile and pass the right args', async () => {
 		const alovaInst = createAlova({
 			baseURL: 'http://xxx',
-			responsed(data) {
+			responded(data) {
 				const { statusCode, data: subData } = data as UniNamespace.UploadFileSuccessCallbackResult;
 				expect(statusCode).toBe(200);
 				if (subData) {
@@ -267,7 +267,7 @@ describe('request adapter', () => {
 	test('should cancel request when call `task.abort` returned by uni.uploadFile', async () => {
 		const alovaInst = createAlova({
 			baseURL: 'http://xxx',
-			responsed(data) {
+			responded(data) {
 				const { statusCode, data: subData } = data as UniNamespace.UploadFileSuccessCallbackResult;
 				expect(statusCode).toBe(200);
 				if (subData) {

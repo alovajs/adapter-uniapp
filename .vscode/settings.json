@@ -5,6 +5,7 @@
 	"[vue]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
+	"jest.autoRun": "off",
 	"editor.suggestSelection": "recentlyUsedByPrefix", // 自动补全
 	"editor.codeActionsOnSave": {
 		"source.organizeImports": "explicit",

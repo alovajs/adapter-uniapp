@@ -1,10 +1,11 @@
 import { noop } from '../src/helper';
 import { mockStorageContainer, uniDownloadConfig, uniRequestConfig, uniUploadConfig } from './utils';
 
+type AnyFn = (options: any) => any;
 interface UniMockMap {
-	request: UniNamespace.Uni['request'];
-	uploadFile: UniNamespace.Uni['uploadFile'];
-	downloadFile: UniNamespace.Uni['downloadFile'];
+	request: AnyFn;
+	uploadFile: AnyFn;
+	downloadFile: AnyFn;
 	getStorageSync: UniNamespace.Uni['getStorageSync'];
 	setStorageSync: UniNamespace.Uni['setStorageSync'];
 	removeStorageSync: UniNamespace.Uni['removeStorageSync'];
@@ -24,7 +25,7 @@ const uniMockMap: UniMockMap = {
 	 * 模拟实现uni.request
 	 * @param options 请求参数
 	 */
-	request(options: UniApp.RequestOptions) {
+	request(options) {
 		uniRequestConfig.handler && uniRequestConfig.handler(options);
 		const timer = setTimeout(() => {
 			if (!uniRequestConfig.error && options.success) {
@@ -63,7 +64,7 @@ const uniMockMap: UniMockMap = {
 	 * uni.uploadFile模拟实现
 	 * @param options 上传参数
 	 */
-	uploadFile(options: UniApp.UploadFileOption) {
+	uploadFile(options) {
 		uniUploadConfig.handler && uniUploadConfig.handler(options);
 
 		const total = 200;
@@ -113,7 +114,7 @@ const uniMockMap: UniMockMap = {
 	 * uni.downloadFile模拟实现
 	 * @param options 上传参数
 	 */
-	downloadFile(options: UniApp.DownloadFileOption) {
+	downloadFile(options) {
 		uniDownloadConfig.handler && uniDownloadConfig.handler(options);
 
 		const total = 200;
