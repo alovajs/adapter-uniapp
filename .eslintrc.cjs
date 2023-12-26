@@ -1,7 +1,8 @@
 module.exports = {
 	env: {
 		browser: true,
-		es2021: true
+		es2021: true,
+		node: true
 	},
 	extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'prettier'],
 	overrides: [],
@@ -20,6 +21,7 @@ module.exports = {
 		'@typescript-eslint/no-empty-function': 'off',
 		'@typescript-eslint/ban-ts-comment': 'off',
 		'no-empty': 'off',
+		'@typescript-eslint/no-var-requires': 'off',
 		'@typescript-eslint/triple-slash-reference': 'off'
 	}
 };

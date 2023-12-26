@@ -30,7 +30,7 @@ exports.banner = `/**
 `;
 
 const compilePath = (exports.compilePath = {
-	external: ['alova', 'alova/vue', 'vue'],
+	external: ['alova', 'alova/vue', 'vue', '@dcloudio/uni-app'],
 	packageName: 'AlovaAdapterUniapp',
 	input: 'src/index.ts',
 	output: suffix => `dist/alova-adapter-uniapp.${suffix}.js`
