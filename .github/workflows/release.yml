@@ -19,6 +19,8 @@ jobs:
       # 拉取代码
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          persist-credentials: false
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
@@ -35,16 +37,19 @@ jobs:
 
       # 这条命令包含了测试
       - name: Unit tests
+        if: ${{ github.ref != 'refs/heads/main' && github.ref != 'refs/heads/alpha' && github.ref != 'refs/heads/beta' }}
         run: npm run test
 
   release:
     runs-on: ubuntu-latest
     needs: [quality]
-    if: ${{ github.ref == 'refs/heads/main' }}
+    if: ${{ github.ref == 'refs/heads/main' || github.ref == 'refs/heads/alpha' || github.ref == 'refs/heads/beta' }}
     steps:
       # 拉取代码
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          persist-credentials: false
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
@@ -68,4 +73,4 @@ jobs:
         run: npm run release
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_ALOVA_PUBLISH_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.ALOVA_GITHUB_TOKEN }}

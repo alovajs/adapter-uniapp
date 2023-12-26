@@ -47,6 +47,18 @@ const alovaInst = createAlova(
 </script>
 ```
 
+当使用`useRequest/useWatcher`立即请求数据时，它将会在`onLoad`的钩子中异步发送请求，因此你可以`methodHandler`中访问 options 参数，如下：
+
+```javascript
+import { onLoad } from '@dcloudio/uni-app';
+
+let options = {};
+const { loading, data, uploading } = useRequest(() => getDetail(options.id));
+onLoad(opt => {
+	options = opt;
+});
+```
+
 ### 上传
 
 在 method 实例的*config*中设置`requestType: 'upload'`时表示上传文件，请求适配器将会调用`uni.uploadFile`，上传的文件数据放在 method 实例的 data 中，你需要在 data 中指定`name`、`filePath或files`，以及`file`(如果需要)，这 4 个参数将传到`uni.uploadFile`中，同时，你还可以在 data 中指定这 4 个参数外的其他参数，请求适配器会将它们传入到`formData`参数中。
