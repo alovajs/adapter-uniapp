@@ -1,9 +1,8 @@
-import { request } from '@dcloudio/types/uni-app/uni/base/request';
 import { noop } from '../src/helper';
 import { mockStorageContainer, uniDownloadConfig, uniRequestConfig, uniUploadConfig } from './utils';
 
 interface UniMockMap {
-	request: typeof request;
+	request: UniNamespace.Uni['request'];
 	uploadFile: UniNamespace.Uni['uploadFile'];
 	downloadFile: UniNamespace.Uni['downloadFile'];
 	getStorageSync: UniNamespace.Uni['getStorageSync'];
@@ -25,7 +24,7 @@ const uniMockMap: UniMockMap = {
 	 * 模拟实现uni.request
 	 * @param options 请求参数
 	 */
-	request(options) {
+	request(options: UniApp.RequestOptions) {
 		uniRequestConfig.handler && uniRequestConfig.handler(options);
 		const timer = setTimeout(() => {
 			if (!uniRequestConfig.error && options.success) {
@@ -64,11 +63,11 @@ const uniMockMap: UniMockMap = {
 	 * uni.uploadFile模拟实现
 	 * @param options 上传参数
 	 */
-	uploadFile(options) {
+	uploadFile(options: UniApp.UploadFileOption) {
 		uniUploadConfig.handler && uniUploadConfig.handler(options);
 
-		let total = 200,
-			sent = 20;
+		const total = 200;
+		let sent = 20;
 		const progressTimer = setInterval(() => {
 			sent += (200 / responseDelay) * progressInterval;
 			progressHandler.upload({
@@ -101,7 +100,7 @@ const uniMockMap: UniMockMap = {
 						errMsg: 'uploadFile:fail abort'
 					});
 			},
-			onProgressUpdate(callback) {
+			onProgressUpdate(callback: any) {
 				progressHandler.upload = callback;
 			},
 			offProgressUpdate: noop,
@@ -114,11 +113,11 @@ const uniMockMap: UniMockMap = {
 	 * uni.downloadFile模拟实现
 	 * @param options 上传参数
 	 */
-	downloadFile(options) {
+	downloadFile(options: UniApp.DownloadFileOption) {
 		uniDownloadConfig.handler && uniDownloadConfig.handler(options);
 
-		let total = 200,
-			written = 20;
+		const total = 200;
+		let written = 20;
 		const progressTimer = setInterval(() => {
 			written += (200 / responseDelay) * progressInterval;
 			progressHandler.download({
@@ -150,7 +149,7 @@ const uniMockMap: UniMockMap = {
 						errMsg: 'downloadFile:fail abort'
 					});
 			},
-			onProgressUpdate(callback) {
+			onProgressUpdate(callback: any) {
 				progressHandler.download = callback;
 			},
 			offProgressUpdate: noop,

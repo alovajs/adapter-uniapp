@@ -7,7 +7,6 @@
 		"noImplicitAny": true,
 		"experimentalDecorators": true,
 		"emitDecoratorMetadata": true,
-		"charset": "utf8",
 		"noEmitOnError": false,
 		"noUnusedLocals": true,
 		"noUnusedParameters": false,
