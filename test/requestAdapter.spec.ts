@@ -296,7 +296,7 @@ describe('request adapter', () => {
 		);
 
 		const { loading, data, uploading, error, onError, abort } = useRequest(Post);
-		await untilCbCalled(setTimeout, 150);
+		await untilCbCalled(setTimeout, 250);
 		abort();
 
 		await untilCbCalled(onError);
@@ -350,7 +350,7 @@ describe('request adapter', () => {
 		});
 
 		const { loading, data, downloading, error, onError, abort } = useRequest(Get);
-		await untilCbCalled(setTimeout, 150);
+		await untilCbCalled(setTimeout, 250);
 		abort();
 
 		await untilCbCalled(onError);
